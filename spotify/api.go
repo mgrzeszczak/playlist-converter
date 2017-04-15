@@ -3,7 +3,6 @@ package spotify
 import (
 	"github.com/franela/goreq"
 	"fmt"
-	"log"
 	"encoding/json"
 	"github.com/mgrzeszczak/playlist-converter/oauth2"
 	"net/http"
@@ -79,6 +78,5 @@ func makeApiRequest(path,method,token string) goreq.Request {
 		Method: method,
 	}
 	request.AddHeader("Authorization",fmt.Sprintf("Bearer %s",token))
-	log.Println(request)
 	return request
 }

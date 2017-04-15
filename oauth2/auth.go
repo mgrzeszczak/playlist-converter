@@ -12,6 +12,7 @@ import (
 	"net"
 	"encoding/json"
 	"github.com/franela/goreq"
+	"log"
 )
 
 const (
@@ -106,11 +107,13 @@ func getAuthCode(authorizeUrl string) (string, error) {
 		}
 		listener.Close()
 	});
+	log.Println("Waiting for authorization...")
 	http.Serve(listener, nil)
 	if err != nil {
 		return "", err
 	}
 	http.DefaultServeMux = http.NewServeMux()
+	log.Println("Success")
 	return code, nil
 }
 
@@ -144,6 +147,7 @@ func getAuthData(args AuthArgs, code string) (*AuthData, error) {
 // source:
 // http://stackoverflow.com/questions/39320371/how-start-web-server-to-open-page-in-browser-in-golang
 func openUrl(url string) error {
+	log.Printf("Browser tab will open soon\nIf it doesn't go to the following link:\n\n%s\n\n",url)
 	var cmd string
 	var args []string
 

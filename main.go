@@ -41,8 +41,16 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to get spotify library: %v\n", err)
 	}
+	log.Printf("Found %d songs\n",len(data))
 
-	log.Printf("Library song count: %d\n", len(data))
+	playlistName, err := spotifyToYoutube(data,ytAuth)
+	if err!=nil {
+		log.Fatalf("Failed to export playlist %v\n",err)
+	}
+
+	log.Printf("Export successful\nPlaylist name: %v\n",playlistName)
+
+	/*log.Printf("Library song count: %d\n", len(data))
 	search, err := youtube.Search("star wars", ytAuth)
 	if err != nil {
 		log.Fatalf("Failed to get search results %v\n", err)
@@ -50,8 +58,8 @@ func main() {
 
 	//res := utils.BestResult("star wars",search)
 
-	log.Println(search[0])
-	/**/
+	log.Println(search[0])*/
+
 
 	//log.Println(csv.WriteFile("output.csv",data))
 }
@@ -85,15 +93,17 @@ func loginYoutube(credentials oauth2.Credentials) (*oauth2.AuthData, error) {
 	return ytAuth, nil
 }
 
-func exportSpotifyPlaylist(data []spotify.Track, ytAuth *oauth2.AuthData) (string, error) {
-
+func spotifyToYoutube(data []spotify.Track, ytAuth *oauth2.AuthData) (string, error) {
 	playlistName := uuid.New().String()
+	log.Printf("Creating playlist: %s\n",playlistName)
 	playlistId, err := youtube.CreatePlaylist(playlistName, ytAuth)
 	if err != nil {
 		return "", err
 	}
+	log.Println("Playlist export started")
+	for i, track := range data {
 
-	for _, track := range data {
+		log.Printf("[%d/%d] %s - %s",i+1,len(data), track.Name,track.Artists[0].Name)
 
 		results, err := youtube.Search(fmt.Sprintf("%s %s", track.Name, track.Artists[0].Name), ytAuth)
 		if err != nil {
