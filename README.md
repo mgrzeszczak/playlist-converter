@@ -2,7 +2,7 @@
 Export your spotify library as a youtube playlist.
 
 # Installation
-Download executable from **/binaries** folder or clone this repo and compile it yourself:
+Download executable from **binaries/** folder or clone this repo and compile it yourself:
 ```
 git clone https://github.com/mgrzeszczak/playlist-converter
 cd playlist-converter
@@ -10,7 +10,7 @@ go build
 ```
 
 # Usage
-Create config file in the same directory as executable containing api credentials:
+Create **config.json** file in the same directory as executable containing api credentials:
 ```
 {
   "youtube" : {
